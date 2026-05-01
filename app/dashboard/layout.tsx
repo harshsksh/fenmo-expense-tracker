@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { auth } from '@/auth';
 import ThemeToggle from '@/components/ThemeToggle';
+import Navbar from '@/components/Navbar';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -9,11 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <header className="bg-zinc-950/90 backdrop-blur-md fixed top-0 w-full z-50 border-b border-white/5 shadow-lg shadow-black/40">
         <div className="flex justify-between items-center h-16 px-6 max-w-[1200px] mx-auto">
           <div className="font-['Work_Sans'] text-2xl font-bold text-teal-600 dark:text-teal-500">ExpenseTrack.</div>
-          <nav className="hidden md:flex space-x-8">
-            <Link className="text-teal-500 font-semibold border-b border-teal-500 pb-1 font-['Work_Sans'] tracking-tight transition-colors duration-200" href="/dashboard">Portfolio</Link>
-            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="/dashboard/insights">Insights</Link>
-            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="/dashboard/vault">Vault</Link>
-          </nav>
+          <Navbar />
           <div className="flex items-center space-x-4">
             <span className="hidden lg:block text-xs font-['IBM_Plex_Mono'] text-zinc-500 uppercase tracking-widest">Powered by Fenmo AI</span>
             <span className="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-teal-400 transition-colors">notifications</span>
