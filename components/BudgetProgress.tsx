@@ -6,7 +6,7 @@ import { formatRupees } from '@/lib/money';
 
 interface Budget {
   category: string;
-  amount: number;
+  limit: number;
 }
 
 export default function BudgetProgress({ expenses }: { expenses: Expense[] }) {
@@ -22,7 +22,7 @@ export default function BudgetProgress({ expenses }: { expenses: Expense[] }) {
           setBudgets(data);
           const vals: Record<string, string> = {};
           data.forEach((b: Budget) => {
-            vals[b.category] = b.amount.toString();
+            vals[b.category] = b.limit.toString();
           });
           setEditValues(vals);
         } else {
@@ -63,7 +63,7 @@ export default function BudgetProgress({ expenses }: { expenses: Expense[] }) {
     setBudgets(data);
   };
 
-  const activeBudgets = budgets.filter((b) => b.amount > 0);
+  const activeBudgets = budgets.filter((b) => b.limit > 0);
 
   return (
     <section className="bg-surface-container rounded-[20px] p-6 border border-white/5">
@@ -96,15 +96,15 @@ export default function BudgetProgress({ expenses }: { expenses: Expense[] }) {
         ) : activeBudgets.length > 0 ? (
           activeBudgets.map((budget) => {
             const spent = currentMonthSpending[budget.category] || 0;
-            const percent = Math.min((spent / budget.amount) * 100, 100);
-            const isOver = spent > budget.amount;
+            const percent = Math.min((spent / budget.limit) * 100, 100);
+            const isOver = spent > budget.limit;
 
             return (
               <div key={budget.category} className="space-y-2">
                 <div className="flex justify-between text-xs font-body-sm">
                   <span className="text-on-surface">{budget.category}</span>
                   <span className={isOver ? 'text-error' : 'text-on-surface-variant'}>
-                    {formatRupees(spent)} / {formatRupees(budget.amount)}
+                    {formatRupees(spent)} / {formatRupees(budget.limit)}
                   </span>
                 </div>
                 <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">

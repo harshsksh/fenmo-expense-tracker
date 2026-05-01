@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       budgets.map((b) => ({
         ...b,
-        amount: paiseToRupees(b.amount),
+        limit: paiseToRupees(b.limitPaise),
       }))
     );
   } catch (error) {
@@ -46,16 +46,16 @@ export async function POST(request: NextRequest) {
       create: {
         userId: session.user.id,
         category: category as any,
-        amount: amountPaise,
+        limitPaise: amountPaise,
       },
       update: {
-        amount: amountPaise,
+        limitPaise: amountPaise,
       },
     });
 
     return NextResponse.json({
       ...budget,
-      amount: paiseToRupees(budget.amount),
+      limit: paiseToRupees(budget.limitPaise),
     });
   } catch (error) {
     console.error('[POST /api/budget]', error);
