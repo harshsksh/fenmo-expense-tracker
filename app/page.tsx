@@ -21,9 +21,9 @@ export default async function LandingPage() {
             <div className="flex gap-4 items-center text-zinc-400">
               <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
               {session ? (
-                <Link href="/api/auth/signout" className="font-button-label text-sm hover:text-error transition-colors">Sign Out</Link>
+                <Link href="/auth/signout" className="font-button-label text-sm hover:text-error transition-colors">Sign Out</Link>
               ) : (
-                <Link href="/api/auth/signin" className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_circle</Link>
+                <Link href="/auth/signin" className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_circle</Link>
               )}
             </div>
           </div>
@@ -46,7 +46,7 @@ export default async function LandingPage() {
                   Go to Dashboard <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </Link>
               ) : (
-                <Link href="/api/auth/signin" className="bg-primary-container text-on-primary-container px-8 py-4 rounded-[10px] font-button-label flex items-center gap-2 hover:scale-[1.02] transition-transform">
+                <Link href="/auth/signin" className="bg-primary-container text-on-primary-container px-8 py-4 rounded-[10px] font-button-label flex items-center gap-2 hover:scale-[1.02] transition-transform">
                   Sign in with Google <span className="material-symbols-outlined text-sm">login</span>
                 </Link>
               )}

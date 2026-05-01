@@ -23,10 +23,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 ) : (
                   <span className="material-symbols-outlined text-zinc-400">account_circle</span>
                 )}
-                <Link href="/api/auth/signout" className="text-xs font-button-label text-zinc-400 hover:text-error transition-colors">Sign Out</Link>
+                <Link href="/auth/signout" className="text-xs font-button-label text-zinc-400 hover:text-error transition-colors">Sign Out</Link>
               </div>
             ) : (
-              <Link href="/api/auth/signin" className="material-symbols-outlined text-zinc-400 hover:text-teal-400 transition-colors">account_circle</Link>
+              <Link href="/auth/signin" className="material-symbols-outlined text-zinc-400 hover:text-teal-400 transition-colors">account_circle</Link>
             )}
           </div>
         </div>

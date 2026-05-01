@@ -65,9 +65,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-7 space-y-6">
           <div className="flex justify-between items-end">
             <h2 className="font-h1 text-h1 text-on-surface">Recent Activity</h2>
-            <span className="text-sm font-data-md text-on-surface-variant">
-              Click to edit
-            </span>
+            
           </div>
 
           <SearchBar onSearch={setFilters} />

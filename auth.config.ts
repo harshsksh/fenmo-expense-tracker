@@ -3,6 +3,10 @@ import Google from 'next-auth/providers/google';
 
 export const authConfig = {
   providers: [Google],
+  pages: {
+    signIn: '/auth/signin',
+    signOut: '/auth/signout',
+  },
   callbacks: {
     jwt({ token, user }) {
       // On initial sign-in, user object is available — persist the DB id in the token
