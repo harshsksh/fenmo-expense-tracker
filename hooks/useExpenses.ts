@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Expense, CreateExpenseInput } from '@/types/expense';
+import { fetchExpenses as apiFetchExpenses, createExpense } from '@/lib/api-client';
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -10,9 +11,7 @@ export function useExpenses() {
   const fetchExpenses = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('/api/expenses');
-      if (!res.ok) throw new Error('Failed to fetch expenses');
-      const data = await res.json();
+      const data = await apiFetchExpenses();
       setExpenses(data);
     } catch (err: any) {
       setError(err.message);
@@ -26,7 +25,6 @@ export function useExpenses() {
   }, [fetchExpenses]);
 
   const addExpense = async (expenseInput: CreateExpenseInput) => {
-    // Optimistic update
     const optimisticExpense: Expense = {
       ...expenseInput,
       created_at: Date.now(),
@@ -35,24 +33,13 @@ export function useExpenses() {
     
     setExpenses(prev => [optimisticExpense, ...prev]);
     setIsSubmitting(true);
+    setError(null);
 
     try {
-      const res = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(expenseInput),
-      });
-      
-      if (!res.ok) {
-        throw new Error('Failed to add expense');
-      }
-      
-      const savedExpense = await res.json();
-      // Replace optimistic expense with saved one
+      const savedExpense = await createExpense(expenseInput);
       setExpenses(prev => prev.map(e => e.id === optimisticExpense.id ? savedExpense : e));
       return true;
     } catch (err: any) {
-      // Revert optimistic update
       setExpenses(prev => prev.filter(e => e.id !== optimisticExpense.id));
       setError(err.message);
       return false;
@@ -61,7 +48,7 @@ export function useExpenses() {
     }
   };
 
-  const totalExpenditure = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+  const totalExpenditure = expenses.reduce((sum, exp) => sum + Math.round(exp.amount * 100), 0) / 100;
 
   return {
     expenses,

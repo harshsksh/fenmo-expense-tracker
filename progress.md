@@ -38,3 +38,12 @@
 - Developed `components/ExpenseForm.tsx` providing an interactive UI for submission with idempotency key generation.
 - Created `components/ExpenseList.tsx` for dynamic rendering of transaction history with mapped Material Symbols.
 - Fully integrated all components into `app/dashboard/page.tsx`, connecting the Client components directly to the backend API.
+
+## Phase 6: Edge Cases & Correctness (from `plan.md`)
+**Status:** ✅ Completed
+**Summary of Work:**
+- Refactored fetch calls to a centralized `lib/api-client.ts`.
+- Fixed Idempotency bug by generating UUID on mount and regenerating only on successful submissions.
+- Fixed floating point accumulation bugs in `useExpenses` by doing strict integer sums.
+- Enforced input edge cases: `max={today()}` on date, `maxLength={200}` on description, and `min="0.01"` on amount.
+- Application is now fully prepared for Vercel Deployment.
