@@ -5,12 +5,14 @@ import { useExpenses } from '@/hooks/useExpenses';
 import ExpenseForm from '@/components/ExpenseForm';
 import ExpenseList from '@/components/ExpenseList';
 import EditExpenseDrawer from '@/components/EditExpenseDrawer';
+import SearchBar from '@/components/SearchBar';
+import BudgetProgress from '@/components/BudgetProgress';
 import DashboardLoading from './loading';
 import { formatRupees } from '@/lib/money';
 import { Expense } from '@/types/expense';
 
 export default function DashboardPage() {
-  const { expenses, isLoading, error, isSubmitting, addExpense, editExpense, removeExpense, totalExpenditure } = useExpenses();
+  const { expenses, isLoading, error, isSubmitting, addExpense, editExpense, removeExpense, totalExpenditure, setFilters } = useExpenses();
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
   if (isLoading) {
@@ -24,7 +26,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-5 flex flex-col gap-8">
           <section>
             <h1 className="font-h1 text-h1 text-on-surface mb-4">Dashboard Overview</h1>
-            <div className="bg-[#161616] rounded-[40px] p-8 border border-white/5 relative overflow-hidden">
+            <div className="bg-surface-container rounded-[40px] p-8 border border-white/5 relative overflow-hidden">
               <div className="flex justify-between items-start mb-12">
                 <div>
                   <p className="font-button-label text-button-label text-on-surface-variant uppercase mb-2">Total Expenditure</p>
@@ -48,6 +50,8 @@ export default function DashboardPage() {
             </div>
           </section>
           
+          <BudgetProgress expenses={expenses} />
+
           {error && (
             <div className="bg-error-container/20 border border-error/50 p-4 rounded-xl text-error text-sm font-body-sm">
               {error}
@@ -58,13 +62,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Right Column: Expense List */}
-        <div className="lg:col-span-7">
-          <div className="flex justify-between items-end mb-8">
+        <div className="lg:col-span-7 space-y-6">
+          <div className="flex justify-between items-end">
             <h2 className="font-h1 text-h1 text-on-surface">Recent Activity</h2>
             <span className="text-sm font-data-md text-on-surface-variant">
               Click to edit
             </span>
           </div>
+
+          <SearchBar onSearch={setFilters} />
           
           <ExpenseList expenses={expenses} onEdit={setEditingExpense} />
         </div>

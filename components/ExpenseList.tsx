@@ -36,7 +36,7 @@ export default function ExpenseList({ expenses, onEdit }: ExpenseListProps) {
           <div
             key={expense.id}
             onClick={() => onEdit?.(expense)}
-            className="bg-[#161616] rounded-[20px] p-5 flex items-center justify-between border border-white/5 hover:border-primary/20 transition-colors group cursor-pointer"
+            className="bg-surface-container rounded-[20px] p-5 flex items-center justify-between border border-white/5 hover:border-primary/20 transition-colors group cursor-pointer"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-surface-container-highest/50 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary/10 transition-all shrink-0">

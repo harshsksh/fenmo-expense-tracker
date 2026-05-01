@@ -4,9 +4,17 @@ import Google from 'next-auth/providers/google';
 export const authConfig = {
   providers: [Google],
   callbacks: {
+    jwt({ token, user }) {
+      // On initial sign-in, user object is available — persist the DB id in the token
+      if (user?.id) {
+        token.id = user.id;
+      }
+      return token;
+    },
     session({ session, token }) {
-      if (session.user && token.sub) {
-        session.user.id = token.sub;
+      if (session.user) {
+        // Use the persisted DB id from the token (not token.sub which may differ)
+        session.user.id = (token.id as string) ?? token.sub!;
       }
       return session;
     },

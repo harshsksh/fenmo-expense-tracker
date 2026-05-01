@@ -12,18 +12,19 @@ export function useExpenses() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filters, setFilters] = useState<{ category?: string; search?: string; startDate?: string; endDate?: string }>({});
 
   const fetchExpenses = useCallback(async () => {
     try {
       setIsLoading(true);
-      const data = await apiFetchExpenses();
+      const data = await apiFetchExpenses(filters);
       setExpenses(data);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     fetchExpenses();
@@ -104,6 +105,7 @@ export function useExpenses() {
     addExpense,
     editExpense,
     removeExpense,
-    totalExpenditure
+    totalExpenditure,
+    setFilters
   };
 }

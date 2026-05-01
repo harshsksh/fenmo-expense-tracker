@@ -1,7 +1,14 @@
 import { Expense, CreateExpenseInput } from '@/types/expense';
 
-export async function fetchExpenses(category?: string): Promise<Expense[]> {
-  const url = category ? `/api/expenses?category=${category}` : '/api/expenses';
+export async function fetchExpenses(filters?: { category?: string; search?: string; startDate?: string; endDate?: string }): Promise<Expense[]> {
+  const params = new URLSearchParams();
+  if (filters?.category) params.append('category', filters.category);
+  if (filters?.search) params.append('search', filters.search);
+  if (filters?.startDate) params.append('startDate', filters.startDate);
+  if (filters?.endDate) params.append('endDate', filters.endDate);
+
+  const queryString = params.toString();
+  const url = queryString ? `/api/expenses?${queryString}` : '/api/expenses';
   const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch expenses');
   return res.json();
@@ -15,7 +22,8 @@ export async function createExpense(expense: CreateExpenseInput): Promise<Expens
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => null);
-    throw new Error(errorData?.errors?.[0]?.message || 'Failed to add expense');
+    const errorMessage = errorData?.errors?.[0]?.message || errorData?.error || 'Failed to add expense';
+    throw new Error(errorMessage);
   }
   return res.json();
 }

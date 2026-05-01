@@ -177,7 +177,7 @@ export default function VaultPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl">
         {/* CSV Export Card */}
-        <div className="bg-[#161616] rounded-[20px] p-8 border border-white/5 flex flex-col items-center gap-6 hover:border-primary/20 transition-colors">
+        <div className="bg-surface-container rounded-[20px] p-8 border border-white/5 flex flex-col items-center gap-6 hover:border-primary/20 transition-colors">
           <div className="w-16 h-16 rounded-2xl bg-primary-container/20 flex items-center justify-center">
             <span className="material-symbols-outlined text-primary text-3xl">table_chart</span>
           </div>
@@ -209,7 +209,7 @@ export default function VaultPage() {
         </div>
 
         {/* PDF Export Card */}
-        <div className="bg-[#161616] rounded-[20px] p-8 border border-white/5 flex flex-col items-center gap-6 hover:border-tertiary/20 transition-colors">
+        <div className="bg-surface-container rounded-[20px] p-8 border border-white/5 flex flex-col items-center gap-6 hover:border-tertiary/20 transition-colors">
           <div className="w-16 h-16 rounded-2xl bg-tertiary-container/20 flex items-center justify-center">
             <span className="material-symbols-outlined text-tertiary text-3xl">picture_as_pdf</span>
           </div>

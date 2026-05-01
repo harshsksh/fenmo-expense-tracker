@@ -158,7 +158,7 @@ export default function InsightsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+        <div className="bg-surface-container rounded-[20px] p-6 border border-white/5">
           <p className="font-button-label text-button-label text-on-surface-variant uppercase mb-2">All-Time Spent</p>
           <h3 className="font-data-lg text-2xl text-on-surface">{formatRupees(totalSpent)}</h3>
         </div>
@@ -167,11 +167,11 @@ export default function InsightsPage() {
           <p className="font-button-label text-button-label text-on-surface-variant uppercase mb-2">{MONTHS[currentMonth]} Spent</p>
           <h3 className="font-data-lg text-2xl text-primary">{formatRupees(monthSpent)}</h3>
         </div>
-        <div className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+        <div className="bg-surface-container rounded-[20px] p-6 border border-white/5">
           <p className="font-button-label text-button-label text-on-surface-variant uppercase mb-2">Avg / Day</p>
           <h3 className="font-data-lg text-2xl text-on-surface">{formatRupees(Math.round(avgPerDay * 100) / 100)}</h3>
         </div>
-        <div className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+        <div className="bg-surface-container rounded-[20px] p-6 border border-white/5">
           <p className="font-button-label text-button-label text-on-surface-variant uppercase mb-2">Top Category</p>
           <h3 className="font-data-lg text-2xl text-on-surface">{topCategory?.name ?? '—'}</h3>
           {topCategory && (
@@ -183,7 +183,7 @@ export default function InsightsPage() {
       {/* Charts Row 1: All-Time vs Current Month Pie Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* All-Time Doughnut */}
-        <div className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+        <div className="bg-surface-container rounded-[20px] p-6 border border-white/5">
           <h3 className="font-data-lg text-data-lg text-on-surface mb-6">All-Time by Category</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -225,7 +225,7 @@ export default function InsightsPage() {
         </div>
 
         {/* Current Month Doughnut */}
-        <div className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+        <div className="bg-surface-container rounded-[20px] p-6 border border-white/5">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-data-lg text-data-lg text-on-surface">{MONTHS[currentMonth]} Breakdown</h3>
             <span className="text-xs font-data-md text-primary px-3 py-1 rounded-full bg-primary/10">

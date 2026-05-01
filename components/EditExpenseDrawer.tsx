@@ -51,7 +51,7 @@ export default function EditExpenseDrawer({ expense, onClose, onSave, onDelete }
       />
 
       {/* Drawer */}
-      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-[#111] border-l border-white/10 z-50 shadow-2xl shadow-black/80 flex flex-col animate-slide-in">
+      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-surface border-l border-white/10 z-50 shadow-2xl shadow-black/80 flex flex-col animate-slide-in">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/5">
           <h2 className="font-h1 text-xl text-on-surface">Edit Expense</h2>

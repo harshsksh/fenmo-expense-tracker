@@ -66,11 +66,27 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
+    console.log('[POST /api/expenses] Session ID:', session?.user?.id);
+    
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Verify the user actually exists in the DB (essential after a DB reset)
+    const userExists = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true }
+    });
+
+    if (!userExists) {
+      console.error('[POST /api/expenses] User not found in DB:', session.user.id);
+      return NextResponse.json({ 
+        error: 'User session invalid. Please log out and log back in.' 
+      }, { status: 401 });
+    }
+
     const body = await request.json();
+    console.log('[POST /api/expenses] Body:', body);
 
     const errors = validateExpenseInput(body);
     if (errors.length > 0) {
@@ -80,27 +96,32 @@ export async function POST(request: NextRequest) {
     const { id, amount, category, description, date } = body;
     const amountPaise = rupeesToPaise(parseFloat(String(amount)));
 
-    const expense = await prisma.expense.upsert({
-      where: { id: id.trim() },
-      create: {
-        id: id.trim(),
-        amount: amountPaise,
-        category: category as any,
-        description: description.trim(),
-        date,
-        userId: session.user.id,
-      },
-      update: {},
-    });
+    try {
+      const expense = await prisma.expense.upsert({
+        where: { id: id.trim() },
+        create: {
+          id: id.trim(),
+          amount: amountPaise,
+          category: category as any,
+          description: description.trim(),
+          date,
+          userId: session.user.id,
+        },
+        update: {},
+      });
 
-    const isNew = expense.created_at.getTime() > Date.now() - 2000;
+      const isNew = expense.created_at.getTime() > Date.now() - 5000;
 
-    return NextResponse.json(
-      serializeExpense(expense),
-      { status: isNew ? 201 : 200 }
-    );
-  } catch (error) {
-    console.error('[POST /api/expenses]', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      return NextResponse.json(
+        serializeExpense(expense),
+        { status: isNew ? 201 : 200 }
+      );
+    } catch (prismaError: any) {
+      console.error('[POST /api/expenses] Prisma Error:', prismaError);
+      return NextResponse.json({ error: prismaError.message || 'Database error' }, { status: 500 });
+    }
+  } catch (error: any) {
+    console.error('[POST /api/expenses] General Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
   }
 }

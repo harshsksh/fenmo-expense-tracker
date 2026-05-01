@@ -46,7 +46,7 @@ export default function ExpenseForm({ onAddExpense, isSubmitting }: ExpenseFormP
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <section className="bg-[#161616] rounded-[20px] p-6 border border-white/5">
+    <section className="bg-surface-container rounded-[20px] p-6 border border-white/5">
       <h3 className="font-data-lg text-data-lg mb-6">Quick Action</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         

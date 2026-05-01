@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { auth } from '@/auth';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -16,6 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="flex items-center space-x-4">
             <span className="hidden lg:block text-xs font-['IBM_Plex_Mono'] text-zinc-500 uppercase tracking-widest">Powered by Fenmo AI</span>
             <span className="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-teal-400 transition-colors">notifications</span>
+            <ThemeToggle />
             
             {session?.user ? (
               <div className="flex items-center gap-3 ml-4 border-l border-white/10 pl-4">
