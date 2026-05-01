@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { validateExpenseInput } from '@/lib/validate';
 import { rupeesToPaise, paiseToRupees } from '@/lib/money';
-import { Category } from '@prisma/client';
+import { Category, CATEGORIES } from '@/types/expense';
 
 function serializeExpense(expense: {
   id: string;
   amount: number;
-  category: Category;
+  category: string;
   description: string;
   date: string;
   created_at: Date;
@@ -25,8 +25,8 @@ export async function GET(request: NextRequest) {
     const categoryParam = searchParams.get('category');
 
     const category =
-      categoryParam && Object.values(Category).includes(categoryParam as Category)
-        ? (categoryParam as Category)
+      categoryParam && CATEGORIES.includes(categoryParam as any)
+        ? (categoryParam as any)
         : undefined;
 
     const expenses = await prisma.expense.findMany({
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       create: {
         id: id.trim(),
         amount: amountPaise,
-        category: category as Category,
+        category: category as any,
         description: description.trim(),
         date,
       },
