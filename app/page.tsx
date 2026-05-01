@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import { auth } from '@/auth';
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await auth();
   return (
     <div className="font-body-md selection:bg-primary selection:text-on-primary">
       {/* TopAppBar */}
@@ -16,9 +18,13 @@ export default function LandingPage() {
             <span className="hidden sm:block font-button-label text-primary text-xs uppercase tracking-widest border border-primary/20 px-3 py-1 rounded-full">
               Powered by Fenmo AI <span className="ml-1">↗</span>
             </span>
-            <div className="flex gap-2 text-zinc-400">
+            <div className="flex gap-4 items-center text-zinc-400">
               <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
-              <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_circle</span>
+              {session ? (
+                <Link href="/api/auth/signout" className="font-button-label text-sm hover:text-error transition-colors">Sign Out</Link>
+              ) : (
+                <Link href="/api/auth/signin" className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_circle</Link>
+              )}
             </div>
           </div>
         </div>
@@ -35,9 +41,15 @@ export default function LandingPage() {
               Track every rupee with precision using our Quiet Luxury engine. ExpenseTrack removes the noise, giving you total command over your financial outcomes.
             </p>
             <div className="flex flex-wrap gap-4 mb-rhythm-md">
-              <Link href="/dashboard" className="bg-primary-container text-on-primary-container px-8 py-4 rounded-[10px] font-button-label flex items-center gap-2 hover:scale-[1.02] transition-transform">
-                Start Tracking <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </Link>
+              {session ? (
+                <Link href="/dashboard" className="bg-primary-container text-on-primary-container px-8 py-4 rounded-[10px] font-button-label flex items-center gap-2 hover:scale-[1.02] transition-transform">
+                  Go to Dashboard <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+              ) : (
+                <Link href="/api/auth/signin" className="bg-primary-container text-on-primary-container px-8 py-4 rounded-[10px] font-button-label flex items-center gap-2 hover:scale-[1.02] transition-transform">
+                  Sign in with Google <span className="material-symbols-outlined text-sm">login</span>
+                </Link>
+              )}
               <button className="border border-outline-variant text-on-surface px-8 py-4 rounded-[10px] font-button-label hover:bg-white/5 transition-colors">
                 See how it works
               </button>

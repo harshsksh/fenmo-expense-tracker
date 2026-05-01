@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { validateExpenseInput } from '@/lib/validate';
 import { rupeesToPaise, paiseToRupees } from '@/lib/money';
 import { Category, CATEGORIES } from '@/types/expense';
+import { auth } from '@/auth';
 
 function serializeExpense(expense: {
   id: string;
@@ -21,6 +22,11 @@ function serializeExpense(expense: {
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const categoryParam = searchParams.get('category');
 
@@ -30,7 +36,10 @@ export async function GET(request: NextRequest) {
         : undefined;
 
     const expenses = await prisma.expense.findMany({
-      where: category ? { category } : undefined,
+      where: {
+        userId: session.user.id,
+        ...(category ? { category } : {})
+      },
       orderBy: [
         { date: 'desc' },
         { created_at: 'desc' },
@@ -46,6 +55,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
 
     const errors = validateExpenseInput(body);
@@ -64,6 +78,7 @@ export async function POST(request: NextRequest) {
         category: category as any,
         description: description.trim(),
         date,
+        userId: session.user.id,
       },
       update: {},
     });
