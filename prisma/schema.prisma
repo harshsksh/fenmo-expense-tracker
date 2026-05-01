@@ -68,6 +68,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   expenses      Expense[]
+  budgets       Budget[]
 }
 
 model VerificationToken {
@@ -76,4 +77,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+model Budget {
+  id        String   @id @default(cuid())
+  userId    String
+  category  Category
+  limitPaise Int
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
 }

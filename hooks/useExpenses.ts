@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Expense, CreateExpenseInput } from '@/types/expense';
-import { fetchExpenses as apiFetchExpenses, createExpense } from '@/lib/api-client';
+import {
+  fetchExpenses as apiFetchExpenses,
+  createExpense,
+  updateExpense as apiUpdateExpense,
+  deleteExpense as apiDeleteExpense,
+} from '@/lib/api-client';
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -48,6 +53,47 @@ export function useExpenses() {
     }
   };
 
+  const editExpense = async (id: string, data: Partial<CreateExpenseInput>) => {
+    // Optimistic update
+    const original = expenses.find(e => e.id === id);
+    if (!original) return false;
+
+    setExpenses(prev =>
+      prev.map(e => (e.id === id ? { ...e, ...data } : e))
+    );
+    setError(null);
+
+    try {
+      const updated = await apiUpdateExpense(id, data);
+      setExpenses(prev => prev.map(e => (e.id === id ? updated : e)));
+      return true;
+    } catch (err: any) {
+      // Rollback
+      setExpenses(prev => prev.map(e => (e.id === id ? original : e)));
+      setError(err.message);
+      return false;
+    }
+  };
+
+  const removeExpense = async (id: string) => {
+    const original = expenses.find(e => e.id === id);
+    if (!original) return false;
+
+    // Optimistic removal
+    setExpenses(prev => prev.filter(e => e.id !== id));
+    setError(null);
+
+    try {
+      await apiDeleteExpense(id);
+      return true;
+    } catch (err: any) {
+      // Rollback
+      setExpenses(prev => [original, ...prev]);
+      setError(err.message);
+      return false;
+    }
+  };
+
   const totalExpenditure = expenses.reduce((sum, exp) => sum + Math.round(exp.amount * 100), 0) / 100;
 
   return {
@@ -56,6 +102,8 @@ export function useExpenses() {
     error,
     isSubmitting,
     addExpense,
+    editExpense,
+    removeExpense,
     totalExpenditure
   };
 }

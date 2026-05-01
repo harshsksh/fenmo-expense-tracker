@@ -10,8 +10,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="font-['Work_Sans'] text-2xl font-bold text-teal-600 dark:text-teal-500">ExpenseTrack.</div>
           <nav className="hidden md:flex space-x-8">
             <Link className="text-teal-500 font-semibold border-b border-teal-500 pb-1 font-['Work_Sans'] tracking-tight transition-colors duration-200" href="/dashboard">Portfolio</Link>
-            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="#">Insights</Link>
-            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="#">Vault</Link>
+            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="/dashboard/insights">Insights</Link>
+            <Link className="text-zinc-400 font-medium font-['Work_Sans'] tracking-tight hover:text-teal-400 transition-colors duration-200" href="/dashboard/vault">Vault</Link>
           </nav>
           <div className="flex items-center space-x-4">
             <span className="hidden lg:block text-xs font-['IBM_Plex_Mono'] text-zinc-500 uppercase tracking-widest">Powered by Fenmo AI</span>

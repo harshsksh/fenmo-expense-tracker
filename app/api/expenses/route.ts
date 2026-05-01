@@ -29,6 +29,9 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const categoryParam = searchParams.get('category');
+    const searchParam = searchParams.get('search');
+    const startDateParam = searchParams.get('startDate');
+    const endDateParam = searchParams.get('endDate');
 
     const category =
       categoryParam && CATEGORIES.includes(categoryParam as any)
@@ -38,7 +41,14 @@ export async function GET(request: NextRequest) {
     const expenses = await prisma.expense.findMany({
       where: {
         userId: session.user.id,
-        ...(category ? { category } : {})
+        ...(category ? { category } : {}),
+        ...(searchParam ? { description: { contains: searchParam, mode: 'insensitive' } } : {}),
+        ...(startDateParam || endDateParam ? {
+          date: {
+            ...(startDateParam ? { gte: startDateParam } : {}),
+            ...(endDateParam ? { lte: endDateParam } : {}),
+          }
+        } : {})
       },
       orderBy: [
         { date: 'desc' },

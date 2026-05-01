@@ -13,7 +13,12 @@ const CategoryIcons: Record<string, string> = {
   Other: 'category'
 };
 
-export default function ExpenseList({ expenses }: { expenses: Expense[] }) {
+interface ExpenseListProps {
+  expenses: Expense[];
+  onEdit?: (expense: Expense) => void;
+}
+
+export default function ExpenseList({ expenses, onEdit }: ExpenseListProps) {
   if (expenses.length === 0) {
     return (
       <div className="text-center py-12 text-on-surface-variant font-body-sm border border-dashed border-white/10 rounded-[20px]">
@@ -28,7 +33,11 @@ export default function ExpenseList({ expenses }: { expenses: Expense[] }) {
         const icon = CategoryIcons[expense.category] || 'category';
         
         return (
-          <div key={expense.id} className="bg-[#161616] rounded-[20px] p-5 flex items-center justify-between border border-white/5 hover:border-primary/20 transition-colors group cursor-pointer">
+          <div
+            key={expense.id}
+            onClick={() => onEdit?.(expense)}
+            className="bg-[#161616] rounded-[20px] p-5 flex items-center justify-between border border-white/5 hover:border-primary/20 transition-colors group cursor-pointer"
+          >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-surface-container-highest/50 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary/10 transition-all shrink-0">
                 <span className="material-symbols-outlined">{icon}</span>
@@ -41,8 +50,13 @@ export default function ExpenseList({ expenses }: { expenses: Expense[] }) {
                 </div>
               </div>
             </div>
-            <div className="font-data-lg text-lg text-on-surface">
-              {formatRupees(expense.amount)}
+            <div className="flex items-center gap-3">
+              <div className="font-data-lg text-lg text-on-surface">
+                {formatRupees(expense.amount)}
+              </div>
+              <span className="material-symbols-outlined text-on-surface-variant/40 group-hover:text-primary transition-colors text-[20px]">
+                edit
+              </span>
             </div>
           </div>
         );
