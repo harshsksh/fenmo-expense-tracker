@@ -24,14 +24,17 @@
 - Setup `app/dashboard/page.tsx` placeholder that currently renders the loading state so you can verify the layout.
 
 ## Phase 4: Database & API Setup
-**Status:** ⏳ Pending
+**Status:** ✅ Completed
 **Summary of Work:**
-- (Pending) Define Prisma schema (`schema.prisma`).
-- (Pending) Setup database client, helpers, and API endpoints (`GET/POST /api/expenses`).
+- Defined the PostgreSQL schema using Prisma (Expense model, Category enum).
+- Handled Prisma 7 breaking changes by configuring `prisma.config.ts` and `@prisma/adapter-pg`.
+- Developed utility functions: `lib/money.ts` (idempotent Paise <-> Rupees conversion) and `lib/validate.ts` (strict type checking & constraints).
+- Built the idempotent REST endpoints at `app/api/expenses/route.ts` supporting `GET` (with category filtering) and `POST` (with upsert-based idempotency).
 
 ## Phase 5: Dashboard Implementation
-**Status:** ⏳ Pending
+**Status:** ✅ Completed
 **Summary of Work:**
-- (Pending) Create custom hook for optimistic UI updates (`useExpenses`).
-- (Pending) Create interactive `ExpenseForm` and `ExpenseList` components.
-- (Pending) Finalize integration in the dashboard page.
+- Created `hooks/useExpenses.ts` for managing application state with optimistic UI updates during data mutations.
+- Developed `components/ExpenseForm.tsx` providing an interactive UI for submission with idempotency key generation.
+- Created `components/ExpenseList.tsx` for dynamic rendering of transaction history with mapped Material Symbols.
+- Fully integrated all components into `app/dashboard/page.tsx`, connecting the Client components directly to the backend API.

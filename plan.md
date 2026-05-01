@@ -931,7 +931,7 @@ export default function TotalDisplay({ total }: { total: number }) {
 ---
 
 ## PHASE 4 — EDGE CASES & CORRECTNESS
-Time: ~1.5 hours | This is what evaluators test most
+This is what evaluators test most
 
 ---
 
@@ -1045,7 +1045,6 @@ Scenario 5 — Neon cold start latency:
 ---
 
 ## PHASE 5 — DEPLOYMENT (VERCEL + NEON)
-Time: ~1 hour
 
 ---
 
