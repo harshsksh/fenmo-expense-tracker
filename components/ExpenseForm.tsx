@@ -73,6 +73,7 @@ export default function ExpenseForm({ onAddExpense, isSubmitting }: ExpenseFormP
             type="text"
             required
             maxLength={200}
+            autoComplete="off"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What was this for?"
